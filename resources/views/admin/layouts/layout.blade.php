@@ -15,6 +15,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
     <!-- DataTables -->
     <link rel="stylesheet" href="/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
+    <!-- Custom css -->
+    @stack('styles')
     <!-- Theme style -->
     <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
@@ -197,20 +199,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- DataTables -->
 <script src="/adminlte/plugins/datatables/jquery.dataTables.js"></script>
+<script src="/adminlte/plugins/datatables-bs4/js/datatables.bootstrap4.js"></script>
+<!-- Custom css -->
+@stack('scripts')
 <!-- AdminLTE App -->
 <script src="/adminlte/dist/js/adminlte.min.js"></script>
-<!-- page script -->
-<script>
-    $(function () {
-        $('#posts-table').DataTable({
-            "paging": true,
-            "lengthChange": true,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-        });
-    });
-</script>
 </body>
 </html>
