@@ -11,9 +11,10 @@
 |
 */
 
-Route::get('/', 'PagesController@home');
+Route::get('/', 'PagesController@home')->name('home');
 
 Route::get('posts', 'PagesController@home');
+Route::get('blog/{post}', 'PostsController@show')->name('posts.show');
 
 Route::group([
     'prefix' => 'admin',
@@ -24,6 +25,7 @@ Route::group([
 
     Route::get('posts', 'PostsController@index')->name('admin.posts.index');
     Route::get('posts/create','PostsController@create')->name('admin.posts.create');
+    Route::post('posts', 'PostsController@store')->name('admin.posts.store');
     //Resto de rutas administrativas
 });
 
