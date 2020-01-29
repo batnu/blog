@@ -17,11 +17,12 @@ class CreatePostsTable extends Migration
             $table->bigIncrements('id');
 
             $table->string('title');
-            $table->mediumText('excerpt');
-            $table->text('body');
+            $table->string('slug')->nullable();
+            $table->mediumText('excerpt')->nullable();
+            $table->text('body')->nullable();
             $table->timestamp('published_at')->nullable();
-            $table->unsignedBigInteger('category_id');
-//Que explique faker
+            $table->unsignedBigInteger('category_id')->nullable();
+
             $table->foreign('category_id')->on('categories')->references('id');
 
             $table->timestamps();

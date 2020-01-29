@@ -12,6 +12,7 @@ class TagsTableSeeder extends Seeder
      */
     public function run()
     {
+        /*
         $tag = new Tag;
         $tag->name = 'Etiqueta 1';
         $tag->save();
@@ -23,6 +24,9 @@ class TagsTableSeeder extends Seeder
         $tag->save();
 
         $tag->posts()->attach([1,3,4]);
+        */
+
+        factory(Tag::class, 15)->create();
 
     }
 }
