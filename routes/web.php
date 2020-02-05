@@ -15,6 +15,8 @@ Route::get('/', 'PagesController@home')->name('home');
 
 Route::get('posts', 'PagesController@home');
 Route::get('blog/{post}', 'PostsController@show')->name('posts.show');
+Route::get('categories/{category}', 'CategoriesController@show')->name('categories.show');
+Route::get('tags/{tag}', "TagsController@show")->name('tags.show');
 
 Route::group([
     'prefix' => 'admin',
@@ -24,11 +26,13 @@ Route::group([
     Route::get('/', 'AdminController@index')->name('dashboard');
 
     Route::get('posts', 'PostsController@index')->name('admin.posts.index');
-    //Route::get('posts/create','PostsController@create')->name('admin.posts.create');
     Route::post('posts', 'PostsController@store')->name('admin.posts.store');
     Route::get('posts/{post}/edit', 'PostsController@edit')->name('admin.posts.edit');
     Route::put('posts/{post}', 'PostsController@update')->name('admin.posts.update');
+    Route::delete('posts/{post}', 'PostsController@destroy')->name('admin.posts.destroy');
+
     Route::post('posts/{post}/photos','PhotosController@store')->name('admin.posts.photos.store');
+    Route::delete('photos/{photo}', 'PhotosController@destroy')->name('admin.photos.destroy');
     //Resto de rutas administrativas
 });
 

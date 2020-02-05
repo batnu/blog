@@ -22,6 +22,20 @@
             <h3 class="card-title">Editar un post nuevo</h3>
         </div>
         <div class="card-body">
+            @if($post->photos->count()>0)
+                <div class="row">
+                    @foreach($post->photos as $photo)
+                        <div class="col-md-2">
+                            <form action="{{ route('admin.photos.destroy', $photo) }}" method="post" class="form-inline">
+                                @csrf
+                                @method('delete')
+                                <button class="btn btn-danger btn-xs" style="position: absolute"><i class="fa fa-times-circle"></i></button>
+                                <img src="{{ Storage::url($photo->url) }}" class="img-responsive img-thumbnail">
+                            </form>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
             <form action="{{ route('admin.posts.update', $post) }}" method="post">
                 @csrf
                 @method('PUT')
@@ -58,6 +72,12 @@
                                                 {!! $errors->first('body','<span class="form-text text-danger">:message</span>') !!}
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label>Audio o vídeo embebido del post</label>
+                                            <textarea name="iframe" rows="4" class="form-control {{ $errors->has('iframe') ? 'is-invalid' : '' }}"
+                                                      placeholder="Añade el iframe del video o audio">{{ old('iframe', $post->iframe) }}</textarea>
+                                            {!! $errors->first('iframe','<span class="form-text text-danger">:message</span>') !!}
+                                        </div>
                                     </div>
 
                                 </div>
@@ -83,7 +103,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="category_id">Categorías</label>
-                                    <select name="category_id" class="form-control {{ $errors->has('category_id') ? 'is-invalid' : '' }}">
+                                    <select name="category_id" class="form-control select2 {{ $errors->has('category_id') ? 'is-invalid' : '' }}">
                                         <option value="">Seleccione un categoría</option>
                                         @foreach($categories as $category)
                                             <option value="{{ $category->id }}" {{ old('category_id', $post->category_id) == $category->id  ? 'selected' : ''}}> {{ $category->name }}</option>
@@ -156,7 +176,9 @@
                 });
                 $('#published_at').val('{{old('published_at', $post->published_at ? $post->published_at->format('m/d/Y') : null) }}');
                 $('.textarea').summernote();
-                $('.select2').select2();
+                $('.select2').select2({
+                    tags: true
+                });
 
                 var photos = new Dropzone('.dropzone',{
                    url: '{{ route('admin.posts.photos.store', $post->slug) }}',
