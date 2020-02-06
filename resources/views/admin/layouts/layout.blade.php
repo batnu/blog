@@ -9,22 +9,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>Zendero</title>
+    <title>{{ config('app.name') }}</title>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
-    <!-- DataTables -->
-    <link rel="stylesheet" href="/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
-    <!-- Custom css -->
-    @stack('styles')
-    <!-- Theme style -->
+    <!-- Custom CSS -->
+@stack('styles')
+<!-- Theme style -->
     <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
-
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
         <!-- Left navbar links -->
@@ -148,8 +145,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    @include('admin.partials.nav')
-    <!-- Content Wrapper. Contains page content -->
+@include('admin.partials.nav')
+
+<!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header">
@@ -167,7 +165,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         {{ session('flash') }}
                     </div>
                 @endif
-               @yield('content')
+                @yield('content')
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content -->
@@ -202,13 +200,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- DataTables -->
-<script src="/adminlte/plugins/datatables/jquery.dataTables.js"></script>
-<script src="/adminlte/plugins/datatables-bs4/js/datatables.bootstrap4.js"></script>
-<!-- Custom css -->
+
+<!-- Custom JS -->
+
+@unless(request()->is('admin/posts/*'))
+    @include('admin.posts.create')
+@endunless
+
 @stack('scripts')
 <!-- AdminLTE App -->
 <script src="/adminlte/dist/js/adminlte.min.js"></script>
-@include('admin.posts.create')
+
+
+
 </body>
 </html>

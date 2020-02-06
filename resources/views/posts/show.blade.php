@@ -8,7 +8,7 @@
     <article class="post container">
         @if($post->photos->count() === 1)
             <figure>
-                <img src="{{ Storage::url($post->photos->first()->url) }}" alt="" class="img-responsive">
+                <img src="{{ Storage::url($post->photos->first()->url) }}" alt="Imagen no disponible" class="img-responsive">
             </figure>
         @elseif($post->photos->count() > 1)
             @include('posts.carousel')
@@ -20,11 +20,13 @@
         <div class="content-post">
             <header class="container-flex space-between">
                 <div class="date">
-                    <span class="c-gris">{{ $post->published_at->format('M d') }}</span>
+                    <span class="c-gris">{{ optional($post->published_at)->format('M d')}} / {{ $post->owner->name }}</span>
                 </div>
-                <div class="post-category">
-                    <span class="category">{{ $post->category->name }}</span>
-                </div>
+                @if($post->category)
+                    <div class="post-category">
+                        <span class="category">{{ $post->category->name }}</span>
+                    </div>
+                @endif
             </header>
             <h1>{{ $post->title }}</h1>
             <div class="divider"></div>

@@ -40,7 +40,7 @@
                     <td>{{$post->excerpt}}</td>
                     <td>
                         <a href="{{ route('posts.show', $post) }}" class="btn btn-xs btn-success" target="_blank"><i class="fa fa-eye"></i></a>
-                        <a href="{{ route('admin.posts.edit', $post->slug)  }}" class="btn btn-xs btn-info"><i class="fa fa-pencil-alt"></i></a>
+                        <a href="{{ route('admin.posts.edit', $post)  }}" class="btn btn-xs btn-info"><i class="fa fa-pencil-alt"></i></a>
                         <form action="{{ route('admin.posts.destroy',$post) }}" method="post" class="d-inline">
                             @csrf
                             @method('delete')

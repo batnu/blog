@@ -8,8 +8,7 @@ use App\Post;
 use App\Tag;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use function foo\func;
-
+use Illuminate\Support\Str;
 
 class PostsController extends Controller
 {
@@ -19,11 +18,14 @@ class PostsController extends Controller
         return view('admin.posts.index', compact('posts'));
     }
 
-    public function store(Request $request){
-        $this->validate($request, ['title' => 'required']);
-        $post = new Post;
-        $post->title = $request->title;
-        $post->save();
+    public function store(Request $request)
+    {
+        $this->validate($request, ['title' => 'required | min:3']);
+
+        $post = Post::create([
+            'title' => $request->title,
+            'user_id' => auth()->user()->id
+        ]);
 
         return redirect()->route('admin.posts.edit', $post);
     }
@@ -32,7 +34,8 @@ class PostsController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
-        return view('admin.posts.edit', compact('post','categories','tags'));
+
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     public function update(StorePostRequest $request, Post $post)
@@ -48,7 +51,6 @@ class PostsController extends Controller
 
     public function destroy(Post $post)
     {
-
         $post->delete();
 
         return redirect()->route('admin.posts.index')->with('flash', 'El post ha sido eliminado');
