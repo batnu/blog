@@ -136,10 +136,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                 </div>
             </li>
+            <li class="nav-item dropdown">
+                <form action="{{ route('logout') }}" method="post">
+                    @csrf
+                    <button class="btn btn-default">Cerrar sesión</button>
+                </form>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
                         class="fas fa-th-large"></i></a>
             </li>
+
         </ul>
     </nav>
     <!-- /.navbar -->
@@ -192,15 +199,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
     </footer>
 </div>
-<!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
-
 <!-- jQuery -->
 <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 <!-- Custom JS -->
 
 @unless(request()->is('admin/posts/*'))
@@ -208,10 +212,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 @endunless
 
 @stack('scripts')
+
 <!-- AdminLTE App -->
 <script src="/adminlte/dist/js/adminlte.min.js"></script>
-
-
-
 </body>
 </html>

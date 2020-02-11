@@ -24,6 +24,8 @@ class Post extends Model
 
     public static function create(array $attributes = [])
     {
+        $attributes['user_id'] = auth()->id();
+
         $post = static::query()->create($attributes);
 
         $post->generateSlug();
@@ -100,5 +102,17 @@ class Post extends Model
         });
 
         return $this->tags()->sync($tagIds);
+    }
+
+    public function viewType($view="")
+    {
+        if($this->photos->count() === 1)
+            return 'posts.photo';
+        elseif($this->photos->count() > 1)
+            return 'posts.caorudel' . $view;
+        elseif($this->iframe)
+            return 'posts.iframe';
+        else
+            return 'posts.text';
     }
 }
