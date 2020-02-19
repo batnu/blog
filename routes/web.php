@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', 'PagesController@home')->name('pages.home');
 Route::get('about','PagesController@about')->name('pages.about');
 Route::get('archive', 'PagesController@archive')->name('pages.archive');

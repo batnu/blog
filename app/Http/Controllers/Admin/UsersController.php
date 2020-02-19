@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\UserWasCreated;
 use App\Http\Requests\UpdateUserRequest;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -20,7 +20,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::allowed()->get();
 
         return view('admin.users.index', compact('users'));
     }
@@ -33,6 +33,7 @@ class UsersController extends Controller
     public function create()
     {
         $user = new User;
+        $this->authorize('create',$user);
         $roles = Role::with('permissions')->get();
         $permissions = Permission::pluck('name', 'id');
 
@@ -56,11 +57,13 @@ class UsersController extends Controller
 
         $user = User::create($data);
 
+        $this->authorize('create',$user);
+
         $user->assignRole($request->roles);
 
         $user->givePermissionTo($request->permissions);
 
-        //Enviar email con contraseña
+        UserWasCreated::dispatch($user, $data['password']);
 
         return redirect()->route('admin.users.index')->withFlash('El usuario ha sido creado correctamente');
     }
@@ -73,6 +76,8 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
+
+        $this->authorize('view',$user);
         return view('admin.users.show', compact('user'));
     }
 
@@ -84,6 +89,8 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
+
+        $this->authorize('update',$user);
         $roles = Role::with('permissions')->get();
         $permissions = Permission::pluck('name', 'id');
 
@@ -99,6 +106,9 @@ class UsersController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+
+        $this->authorize('update',$user);
+
         $user->update($request->validated());
 
         return back()->withFlash('Usuario actualizado');
@@ -112,6 +122,8 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $this->authorize('delete',$user);
+        $user->delete();
+        return redirect()->route('admin.users.index')->withFlash('El usuario '. $user->name . ' ha sido eliminado');
     }
 }
