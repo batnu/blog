@@ -24,6 +24,36 @@
             </div>
         </div>
     </article>
+
+    <div class="container">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3>Comentarios</h3>
+                <button id="comment" class="btn btn-primary">Crear un comentario</button>
+            </div>
+            <div class="card-body">
+                <form action="{{ route('posts.comments.store', $post->slug) }}" method="POST">
+                    @csrf
+                    <div class="row mb-3 ml-1">
+                        <label for="name_user"><strong>Nombre del usuario: </strong></label>
+                        <input type="text" name="name_user" id="name_user">
+                    </div>
+                    <div class="row mb-3 ml-1">
+                        <label for="comment"><strong>Comentario: </strong></label>
+                        <textarea name="comment" id="comment" cols="30" rows="5" placeholder="Escriba su comentario :)"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Crear comentario</button>
+                </form>
+                @forelse ($post->comments as $comment)
+                    <p>{{ $comment->comment }}</p>
+                    <hr>
+                @empty
+                    <p>El post no tiene comentarios</p>
+                @endforelse
+
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('styles')
@@ -36,5 +66,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script>
         $('#carousel').carousel()
+        $('form').hide();
+        $('#comment').click(function(){
+            $('form').toggle();
+        });
     </script>
 @endpush

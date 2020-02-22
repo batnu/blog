@@ -35,6 +35,7 @@
                             <button type="submit" class="btn btn-success btn-block">
                                 Crear rol
                             </button>
+                            <a href="{{ route('admin.roles.index') }}" class="btn btn-danger btn-block">Cancelar</a>
                         </div>
                     </form>
                 </div>

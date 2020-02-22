@@ -8,8 +8,12 @@
                     <h1>{{$role->name}}</h1>
                 </div>
                 <div class="card-body box-profile">
-                    <h3>El rol tiene ámbito: {{ $role->guard_name }}</h3>
-                    <h3>Tiene los siguientes permisos: </h3>
+                    <h3>El rol tiene ámbito:</h3>
+                    <li class="ml-3">{{ $role->guard_name }}</li>
+                    <h3>Tiene los siguientes permisos:</h3>
+                    @foreach($role->permissions->pluck('name') as $permission)
+                        <li class="ml-3">{{ $permission }}</li>
+                    @endforeach
                 </div>
             </div>
         </div>
