@@ -45,8 +45,15 @@
                     <button type="submit" class="btn-primary">Crear comentario</button>
                 </form>
                 @forelse ($post->comments as $comment)
-                    <p>{{ $comment->comment }}</p>
-                    <hr>
+                    <div class="card card-primary card-outline">
+                        <div class="card-title">
+                            <strong>{{$comment->name_user}} </strong>
+                            <small> {{ $comment->created_at }}</small>
+                        </div>
+                        <div class="card-body">
+                            <p>{{ $comment->comment }}</p>
+                        </div>
+                    </div>
                 @empty
                     <p>El post no tiene comentarios</p>
                 @endforelse
