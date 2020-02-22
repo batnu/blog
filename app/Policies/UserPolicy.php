@@ -20,7 +20,7 @@ class UserPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function viewAny(User $authUser)
+    public function viewAny(User $user)
     {
         //
     }
@@ -57,7 +57,7 @@ class UserPolicy
      */
     public function update(User $authUser, User $user)
     {
-        //
+        return $authUser->id === $user->id || $authUser->hasPermissionTo('Update users');
     }
 
     /**
@@ -91,7 +91,7 @@ class UserPolicy
      * @param  \App\User  $model
      * @return mixed
      */
-    public function forceDelete(User $authUser, User $user)
+    public function forceDelete(User $user, User $model)
     {
         //
     }

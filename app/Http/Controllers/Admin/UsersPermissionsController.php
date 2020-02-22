@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class UsersPermissionsController extends Controller
 {
@@ -10,8 +12,8 @@ class UsersPermissionsController extends Controller
     {
         $user->permissions()->detach();
 
-        $user->givePermissionTo($request->permission);
+        $user->givePermissionTo($request->permissions);
 
-        return back()->withFlash('Los roles han sido actualizados');
+        return back()->withFlash('Los permisos han sido actualizados');
     }
 }

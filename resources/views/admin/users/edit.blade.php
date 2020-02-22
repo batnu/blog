@@ -50,12 +50,22 @@
                     <h3 class="card-title">Roles y permisos</h3>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.users.roles.update', $user) }}" method="post">
-                        @csrf
-                        @method('put')
-                        @include('admin.roles.checkBoxes')
-                        <button class="btn btn-success btn-block">Actualizar roles</button>
-                    </form>
+                    @role('Admin')
+                        <form action="{{ route('admin.users.roles.update', $user) }}" method="post">
+                            @csrf
+                            @method('put')
+                            @include('admin.roles.checkBoxes', ['model' => $user])
+                            <button class="btn btn-success btn-block">Actualizar roles</button>
+                        </form>
+                    @else
+                        <ul class="list-group">
+                            @forelse($user->roles as $role)
+                                <li class="list-group-item">{{ $role->name }}</li>
+                            @empty
+                                <li class="list-group-item">No tienes roles asignados</li>
+                            @endforelse
+                        </ul>
+                    @endrole
                 </div>
             </div>
             <div class="card card-primary">
