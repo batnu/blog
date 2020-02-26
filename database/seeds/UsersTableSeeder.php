@@ -16,38 +16,44 @@ class UsersTableSeeder extends Seeder
     {
         $adminRole = Role::create(['name' => 'Admin']);
         $writerRole = Role::create(['name' => 'Writer']);
+
         $viewPostPermission = Permission::create(['name' => 'View posts']);
         $createPostPermission = Permission::create(['name' => 'Create posts']);
         $updatePostPermission = Permission::create(['name' => 'Update posts']);
         $deletePostPermission = Permission::create(['name' => 'Delete posts']);
-
 
         $viewUserPermission = Permission::create(['name' => 'View users']);
         $createUserPermission = Permission::create(['name' => 'Create users']);
         $updateUserPermission = Permission::create(['name' => 'Update users']);
         $deleteUserPermission = Permission::create(['name' => 'Delete users']);
 
+        $viewRolePermission = Permission::create(['name' => 'View roles']);
+        $createRolePermission = Permission::create(['name' => 'Create roles']);
+        $updateRolePermission = Permission::create(['name' => 'Update roles']);
+        $deleteRolePermission = Permission::create(['name' => 'Delete roles']);
 
+        $deleteCommentPermission = Permission::create(['name' => 'Delete comments']);
 
         $admin = new User;
-        $admin->name = "Pedro";
-        $admin->email = "batnusan@gmail.com";
-        $admin->password = "123456";
+        $admin->name = 'Pedro';
+        $admin->email = 'batnusan@gmail.com';
+        $admin->password = '123456';
         $admin->save();
+
         $admin->assignRole($adminRole);
 
         $writer = new User;
-        $writer->name = "Pepe";
-        $writer->email = "pepe@email.es";
-        $writer->password = "123456";
+        $writer->name = 'Juan';
+        $writer->email = 'juan@gmail.com';
+        $writer->password = '123456';
         $writer->save();
-        $writer->assignRole($writerRole);
-        $writer->assignRole($adminRole);
 
+        $writer->assignRole($adminRole);
+        $writer->assignRole($writerRole);
 
         $users = factory(User::class, 8)->make();
 
-        $users->each(function ($u) use ($writerRole){
+        $users->each(function ($u) use($writerRole){
             $u->save();
             $u->assignRole($writerRole);
         });

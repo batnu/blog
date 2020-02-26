@@ -17,6 +17,7 @@ class RolesController extends Controller
     public function index()
     {
         $roles = Role::all();
+
         return view('admin.roles.index', compact('roles'));
     }
 
@@ -27,6 +28,7 @@ class RolesController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', new Role);
         $permissions = Permission::pluck('name', 'id');
         $role = new Role;
         return view('admin.roles.create', compact('role','permissions'));
@@ -40,13 +42,15 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', new Role);
         $data = $this->validate($request, [
             'name' => 'required | unique:roles',
             'guard_name' => 'required'
         ]);
 
         $role = Role::create($data);
-        if ($request->has('permissions')){
+
+        if($request->has('permissions')) {
             $role->givePermissionTo($request->permissions);
         }
 
@@ -61,8 +65,8 @@ class RolesController extends Controller
      */
     public function show(Role $role)
     {
+        $this->authorize('view', $role);
         return view('admin.roles.show', compact('role'));
-
     }
 
     /**
@@ -73,8 +77,8 @@ class RolesController extends Controller
      */
     public function edit(Role $role)
     {
-        $permissions = Permission::pluck('name', 'id');
-
+        $this->authorize('update', $role);
+        $permissions = Permission::pluck('name','id');
         return view('admin.roles.edit', compact('role', 'permissions'));
     }
 
@@ -87,13 +91,17 @@ class RolesController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        $this->authorize('update', $role);
         $data = $this->validate($request, [
-            'name' => 'required | unique:roles,name,'.$role->id,
+            'name' => 'required | unique:roles,name,' . $role->id,
             'guard_name' => 'required'
         ]);
+
         $role->update($data);
+
         $role->permissions()->detach();
-        if ($request->has('permissions')){
+
+        if ($request->has('permissions')) {
             $role->givePermissionTo($request->permissions);
         }
 
@@ -108,8 +116,10 @@ class RolesController extends Controller
      */
     public function destroy(Role $role)
     {
-        //$this->authorize('delete',$role);
+        $this->authorize('delete', $role);
+
         $role->delete();
-        return redirect()->route('admin.users.index')->withFlash('El rol '. $role->name . ' ha sido eliminado');
+
+        return redirect()->route('admin.roles.index')->withFlash('Se ha eliminado el rol correctamente');
     }
 }

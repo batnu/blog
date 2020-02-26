@@ -1,5 +1,4 @@
 @extends('layouts.layout')
-
 @section('meta-title', $post->title)
 
 @section('meta-description', $post->excerpt)
@@ -25,39 +24,49 @@
         </div>
     </article>
 
-    <div class="container">
+    <div class="col-md-10 m-auto pb-3">
         <div class="card card-primary card-outline">
-            <div class="card-header">
-                <h3>Comentarios</h3>
-                <button id="comment" class="btn btn-primary">Crear un comentario</button>
+            <div class="card-header with-border">
+                <h1>Comentarios</h1>
+                <button class="btn btn-primary" id="comments">Crear comentario</button>
             </div>
             <div class="card-body">
-                <form action="{{ route('posts.comments.store', $post->slug) }}" method="POST">
-                    @csrf
-                    <div class="row mb-3 ml-1">
-                        <label for="name_user"><strong>Nombre del usuario: </strong></label>
-                        <input type="text" name="name_user" id="name_user">
+                <div id="create_comments">
+                    {!! Form::open(['action' => ['CommentsController@store',$post->slug], 'method' => 'post']) !!}
+                    <div class="form-group col-md-6 pb-4">
+                        {{ Form::bsText('name_user','',['placeholder' => 'Inserte su nombre']) }}
                     </div>
-                    <div class="row mb-3 ml-1">
-                        <label for="comment"><strong>Comentario: </strong></label>
-                        <textarea name="comment" id="comment" cols="30" rows="5" placeholder="Escriba su comentario :)"></textarea>
+                    <div class="form-group col-md-6 pb-2">
+                        {{ Form::bsTextArea('comment', '', ['placeholder' => 'Introduzca su comentario'])}}
                     </div>
-                    <button type="submit" class="btn-primary">Crear comentario</button>
-                </form>
-                @forelse ($post->comments as $comment)
-                    <div class="card card-primary card-outline">
-                        <div class="card-title">
-                            <strong>{{$comment->name_user}} </strong>
-                            <small> {{ $comment->created_at }}</small>
+                    <div class="form-group">
+                        {{ Form::bsSubmit('Crear',['class' =>'btn btn-primary']) }}
+                    </div>
+                    {!! Form::close() !!}
+                </div>
+
+                @forelse($post->comments as $comment)
+                    <div class="card card-primary card-outline with-border">
+                        <div class="card-header pt-2">
+                            <strong>{{ $comment->name_user }}</strong>
+                            <small>{{ $comment->created_at }}</small>
+                            @if(auth()->user())
+                                <form action="{{ route('posts.comments.destroy', $comment) }}" method="post" class="d-inline float-right">
+                                    @csrf
+                                    @method('delete')
+                                    <button class="btn btn-xs btn-danger" onclick="return confirm('¿Seguro que quieres eliminar este comentario?')">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </form>
+                            @endif
                         </div>
                         <div class="card-body">
                             <p>{{ $comment->comment }}</p>
                         </div>
                     </div>
                 @empty
-                    <p>El post no tiene comentarios</p>
+                    <p>El post no tiene ningún comentario.</p>
                 @endforelse
-
             </div>
         </div>
     </div>
@@ -65,6 +74,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 @endpush
 
 @push('scripts')
@@ -73,9 +83,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script>
         $('#carousel').carousel()
-        $('form').hide();
-        $('#comment').click(function(){
-            $('form').toggle();
-        });
+        $('#create_comments').hide();
+        $('#comments').click(function() {
+            $('#create_comments').toggle();
+        })
     </script>
 @endpush

@@ -25,8 +25,8 @@ Route::get('categories/{category}', 'CategoriesController@show')->name('categori
 Route::get('tags/{tag}', "TagsController@show")->name('tags.show');
 
 Route::post('posts/{post}/comments',"CommentsController@store")->name('posts.comments.store');
+Route::delete('comments/{comment}', 'CommentsController@destroy')->name('posts.comments.destroy');
 
-//Route::resource('comments','CommentsController');
 
 Route::group([
     'prefix' => 'admin',

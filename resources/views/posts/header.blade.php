@@ -1,6 +1,6 @@
 <header class="container-flex space-between">
     <div class="date">
-        <span class="c-gris">{{ optional($post->published_at)->format('M d')}} / {{ $post->owner->name }}</span>
+        <span class="c-gris">{{ optional($post->published_at)->format('M d')}}  @if($post->owner) / {{ $post->owner->name }} @endif </span>
     </div>
     @if($post->category)
         <div class="post-category">
