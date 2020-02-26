@@ -45,6 +45,18 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    public static function admins()
+    {
+        $admins = array();
+        $users = User::all();
+        foreach ($users as $user){
+            if($user->hasRole('Admin')){
+                $admins[]=$user;
+            }
+        }
+        return $admins;
+    }
+
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);

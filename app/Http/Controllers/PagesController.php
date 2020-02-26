@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Post;
@@ -11,7 +12,8 @@ class PagesController extends Controller
     public function home()
     {
         $posts = Post::published()->paginate(10);
-        return view('pages.home',compact('posts'));
+        $comment = Comment::comment();
+        return view('pages.home',compact('posts', 'comment'));
     }
 
     public function about()

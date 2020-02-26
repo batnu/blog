@@ -7,6 +7,9 @@
             <span class="category text-capitalize">
                 <a href="{{ route('categories.show', $post->category) }}">{{ $post->category->name }}</a>
             </span>
+            <span>
+                <h1>Visitas: {{ $post->visits }}</h1>
+            </span>
         </div>
     @endif
 </header>
