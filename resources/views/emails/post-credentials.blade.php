@@ -2,13 +2,9 @@
 # El usuario {{ $user->name }} ha creado un nuevo post
 
 @component('mail::table')
-    | Username | Contraseña |
+    | Id del post | Nombre del post |
     |:--------|:----------|
-    | {{ $post->name }} | {{ $post->excerpt }}
-@endcomponent
-
-@component('mail::button', ['url' => ''])
-Button Text
+    | {{ $post->id }} | {{ $post->title }}
 @endcomponent
 
 Un saludo,<br>
